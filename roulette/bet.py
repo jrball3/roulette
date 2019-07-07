@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 from roulette.exceptions import InvalidBetException
 from roulette.wheel import RouletteWheel
 from roulette.table import RouletteTable
@@ -11,7 +13,7 @@ class Odds():
     self.for_to = for_to 
 
 
-class BetType(Enum):
+class BetType(IntEnum):
   STRAIGHT = 0
   SPLIT = 1
   STREET = 2
@@ -38,64 +40,68 @@ class BetBuilder():
     self.wheel = wheel
 
   def make_straight_bet(self, number, chips):
-    if self.table.has_Tablenumber(number):
+    if not self.table.has_number(number):
       raise InvalidBetException('number {number} not on table.')
-    if self.wheel.has_Tablenumber(number):
+    if not self.wheel.has_number(number):
       raise InvalidBetException('number {number} not on wheel.')
-    return Bet(BetType.STRAIGHT, number)
+    return Bet(BetType.STRAIGHT, [number], chips)
 
-  def make_split_bet(self, numbers, chips):
-    if len(numbers) != 2:
-      raise InvalidBetException('A split bet must have 2 numbers')
-    if not self.table.is_adjacent(numbers[0], numbers[1]):
+  def make_split_bet(self, num1, num2, chips):
+    if not self.table.is_adjacent(num1, num2):
       raise InvalidBetException('numbers {num1} and {num2} are not adjacent.')
-    return Bet(BetType.SPLIT, numbers, chips)
+    return Bet(BetType.SPLIT, [num1, num2], chips)
 
   def make_top_bet(self, chips):
     numbers = self.table.get_top_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.TOP, numbers, chips)
 
-  def make_street_bet(self, numbers, chips):
-    if not self.table.is_street(numbers):
-      raise InvalidBetException('numbers {numbers} are not a street.')
+  def make_street_bet(self, num_street, chips):
+    numbers = self.table.get_street_numbers(num_street)
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.STREET, numbers, chips)
 
-  def make_line_bet(self, numbers, chips):
-    if not self.table.is_line(numbers):
-      raise InvalidBetException('numbers {numbers} are not a line.')
+  def make_line_bet(self, num_line, chips):
+    numbers = self.table.get_line_numbers(num_line)
+    numbers = list(map(lambda n: n.value(), [*numbers[0], *numbers[1]]))
     return Bet(BetType.LINE, numbers, chips)
 
-  def make_corner_bet(self, numbers, chips):
-    if not self.table.is_corner(numbers, chips):
-      raise InvalidBetException('numbers {numbers} are not a corner.')
+  def make_corner_bet(self, num_corner, chips):
+    numbers = self.table.get_corner_numbers(num_corner)
+    numbers = list(map(lambda n: n.value(), [*numbers[0], *numbers[1]]))
     return Bet(BetType.CORNER, numbers, chips)
 
   def make_column_bet(self, num_column, chips):
-    if not self.table.is_column(num_column):
-      raise InvalidBetException('{num_column} is not a valid column.')
     numbers = self.table.get_column_numbers(num_column)
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.COLUMN, numbers, chips)
 
   def make_even_bet(self, chips):
     numbers = self.table.get_even_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.EVEN_ODD, numbers, chips)
 
   def make_odd_bet(self, chips):
     numbers = self.table.get_odd_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.EVEN_ODD, numbers, chips)
 
   def make_red_bet(self, chips):
     numbers = self.table.get_red_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.RED_BLACK, numbers, chips)
 
   def make_black_bet(self, chips):
     numbers = self.table.get_black_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.RED_BLACK, numbers, chips)
 
   def make_low_bet(self, chips):
     numbers = self.table.get_low_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.LOW_HIGH, numbers, chips)
 
   def make_high_bet(self, chips):
     numbers = self.table.get_high_numbers()
+    numbers = list(map(lambda n: n.value(), numbers))
     return Bet(BetType.LOW_HIGH, numbers, chips)
