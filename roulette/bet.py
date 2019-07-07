@@ -1,6 +1,6 @@
-from wheel import RouletteWheel
-from table import RouletteTable
-from exceptions import InvalidBetException
+from roulette.exceptions import InvalidBetException
+from roulette.wheel import RouletteWheel
+from roulette.table import RouletteTable
 
 
 class Odds():

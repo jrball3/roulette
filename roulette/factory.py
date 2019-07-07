@@ -1,5 +1,5 @@
-from game import Game
-from state import RouletteInitialState
+from roulette.game import Game
+from roulette.state import RouletteInitialState
 
 
 class RouletteFactory():

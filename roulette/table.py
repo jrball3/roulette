@@ -1,7 +1,6 @@
-from math import ceil
 from copy import deepcopy
 
-from common import NumberColor
+from roulette.common import NumberColor
 
 
 class TableNumber():
@@ -20,11 +19,14 @@ class TableNumber():
   def value(self):
     return int(self.number)
 
+  def nonzero(self):
+    return self.value() != 0
+
   def even(self):
-    return self.value() % 2 == 0
+    return self.nonzero() and self.value() % 2 == 0
 
   def odd(self):
-    return not self.even()
+    return self.nonzero() and not self.even()
 
   def __str__(self):
     return f"{self.color.name} Number: {self.string()}"
@@ -47,8 +49,8 @@ class RouletteTable():
     self.num_count = int(self.row_count * self.row_length)
     self.line_count = int(self.row_count / self.line_height)
     self.min_number = 0
-    self.max_number = self.num_count + 1
-    self.mid_number = (self.max_number - self.min_number) / 2.0
+    self.max_number = self.num_count
+    self.mid_number = int((self.max_number - self.min_number) / 2.0)
 
     # Build the main streets grid and inside map
     self.number_map = {}
@@ -57,9 +59,9 @@ class RouletteTable():
       street = []
       for col_num in range(self.row_length):
         value = int(self.row_length * row_num + col_num) + 1
-        num = TableNumber(value, color_for_number(str(value)))
+        num = TableNumber(str(value), color_for_number(str(value)))
+        self.number_map[str(value)] = num
         street.append(num)
-        self.number_map[value] = num
       self.streets.append(street)
 
     # Link all numbers together so we can easily
@@ -141,19 +143,19 @@ class RouletteTable():
     raise deepcopy(self.columns[num_column])
 
   def get_even_numbers(self):
-    return deepcopy([x for x in self.number_map.values() if x.even()])
+    return [deepcopy(x) for x in self.number_map.values() if x.even()]
   
   def get_odd_numbers(self):
-    return deepcopy([x for x in self.number_map.values() if x.odd()])
+    return [deepcopy(x) for x in self.number_map.values() if x.odd()]
 
   def get_red_numbers(self):
-    return deepcopy([x for x in self.number_map.values() if x.color == NumberColor.RED])
+    return [deepcopy(x) for x in self.number_map.values() if x.color == NumberColor.RED]
   
   def get_black_numbers(self):
-    return deepcopy([x for x in self.number_map.values() if x.color == NumberColor.BLACK])
+    return [deepcopy(x) for x in self.number_map.values() if x.color == NumberColor.BLACK]
 
   def get_low_numbers(self):
-    return deepcopy([x for x in self.number_map.values() if x.value() <= self.mid_number])
+    return [deepcopy(x) for x in self.number_map.values() if x.value() <= self.mid_number and x.nonzero()]
 
   def get_high_numbers(self):
-    return deepcopy([x for x in self.number_map.values() if x.value() >= self.mid_number])
+    return [deepcopy(x) for x in self.number_map.values() if x.value() > self.mid_number and x.nonzero()]

@@ -1,4 +1,4 @@
-from exceptions import InvalidActionException, UnhandledActionException
+from roulette.exceptions import InvalidActionException, UnhandledActionException
 
 
 class GameState():

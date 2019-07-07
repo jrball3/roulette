@@ -1,14 +1,15 @@
 import os
 import sys
-import unittest
-from copy import deepcopy
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 ROOT_PATH = os.path.dirname(DIR_PATH)
 sys.path.append(ROOT_PATH)
 
-from game import Game, GameAction, GameState, GameStateListener
-from exceptions import InvalidActionException
+import unittest
+from copy import deepcopy
+
+from roulette.game import Game, GameAction, GameState, GameStateListener
+from roulette.exceptions import InvalidActionException
 
 
 class MockGameListener(GameStateListener):

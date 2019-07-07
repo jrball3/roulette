@@ -1,12 +1,13 @@
 import random
 from enum import IntEnum
-from common import NumberColor
+
+from roulette.common import NumberColor
 
 
 class WheelBin():
-  def __init__(self, number=None, wheel=None):
-    self.number = None
-    self.color = None
+  def __init__(self, number=None, color=None):
+    self.number = number
+    self.color = color
 
 
 class RouletteWheel():
@@ -20,7 +21,7 @@ class RouletteWheel():
       self.bins[str(num)] = WheelBin(number = str(num), color = color)
 
   def spin(self):
-    return random.choice(self.bins.values())
+    return random.choice(list(self.bins.values()))
 
   def has_number(self, number):
     return number in self.bins

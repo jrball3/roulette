@@ -1,7 +1,8 @@
 from copy import deepcopy
 from enum import IntEnum
-from game import GameAction
-from state import (
+
+from roulette.game import GameAction
+from roulette.state import (
   RouletteInitialState,
   RouletteBetState, 
   RouletteSpinState,

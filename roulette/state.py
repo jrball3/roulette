@@ -1,9 +1,10 @@
 from enum import IntEnum
-from game import GameState, InvalidActionException
-from action import RouletteActionType
-from table import RouletteTable
-from wheel import RouletteWheel
-from bet import Odds, BetType
+
+from roulette.game import GameState, InvalidActionException
+from roulette.action import RouletteActionType
+from roulette.table import RouletteTable
+from roulette.wheel import RouletteWheel
+from roulette.bet import Odds, BetType
 
 
 class RouletteBaseState(GameState):
