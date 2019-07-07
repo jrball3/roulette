@@ -115,8 +115,8 @@ class RouletteTable():
     return number in self.number_map
 
   def is_adjacent(self, num1, num2):
-    n1 = self.number_map.get(num1, self.outside_map.get(num1))
-    n2 = self.number_map.get(num2, self.outside_map.get(num2))
+    n1 = self.number_map.get(num1)
+    n2 = self.number_map.get(num2)
     if n1 is not None and n2 is not None: 
       if n2 in [n1.left, n1.above, n1.below, n1.right]:
         return True
