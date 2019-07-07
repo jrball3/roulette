@@ -1,6 +1,6 @@
 import random
 from enum import IntEnum
-from roulette import NumberColor
+from common import NumberColor
 
 
 class WheelBin():

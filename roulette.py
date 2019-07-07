@@ -2,12 +2,6 @@ from game import Game
 from state import RouletteInitialState
 
 
-class NumberColor(IntEnum):
-  RED = 0
-  BLACK = 1
-  GREEN = 2
-
-
 class RouletteFactory():
   def __init__(self):
     self.name = None

@@ -26,9 +26,9 @@ class BetType(Enum):
 
 
 class Bet():
-  def __init__(self, bet_type, numbers, chips):
+  def __init__(self, bet_type, TableNumbers, chips):
     self.bet_type = bet_type
-    self.numbers = numbers
+    self.TableNumbers = TableNumbers
     self.chips = chips
 
 
@@ -37,65 +37,65 @@ class BetBuilder():
     self.table = table
     self.wheel = wheel
 
-  def make_straight_bet(self, number, chips):
-    if self.table.has_number(number):
-      raise InvalidBetException('Number {number} not on table.')
-    if self.wheel.has_number(number):
-      raise InvalidBetException('Number {number} not on wheel.')
-    return Bet(BetType.STRAIGHT, number)
+  def make_straight_bet(self, TableNumber, chips):
+    if self.table.has_TableTableNumber(TableNumber):
+      raise InvalidBetException('TableNumber {TableNumber} not on table.')
+    if self.wheel.has_TableTableNumber(TableNumber):
+      raise InvalidBetException('TableNumber {TableNumber} not on wheel.')
+    return Bet(BetType.STRAIGHT, TableNumber)
 
-  def make_split_bet(self, numbers, chips):
-    if len(numbers) != 2:
-      raise InvalidBetException('A split bet must have 2 numbers')
-    if not self.table.is_adjacent(numbers[0], numbers[1]):
-      raise InvalidBetException('Numbers {num1} and {num2} are not adjacent.')
-    return Bet(BetType.SPLIT, numbers, chips)
+  def make_split_bet(self, TableNumbers, chips):
+    if len(TableNumbers) != 2:
+      raise InvalidBetException('A split bet must have 2 TableNumbers')
+    if not self.table.is_adjacent(TableNumbers[0], TableNumbers[1]):
+      raise InvalidBetException('TableNumbers {num1} and {num2} are not adjacent.')
+    return Bet(BetType.SPLIT, TableNumbers, chips)
 
   def make_top_bet(self, chips):
-    numbers = self.table.get_top_numbers()
-    return Bet(BetType.TOP, numbers, chips)
+    TableNumbers = self.table.get_top_TableNumbers()
+    return Bet(BetType.TOP, TableNumbers, chips)
 
-  def make_street_bet(self, numbers, chips):
-    if not self.table.is_street(numbers):
-      raise InvalidBetException('Numbers {numbers} are not a street.')
-    return Bet(BetType.STREET, numbers, chips)
+  def make_street_bet(self, TableNumbers, chips):
+    if not self.table.is_street(TableNumbers):
+      raise InvalidBetException('TableNumbers {TableNumbers} are not a street.')
+    return Bet(BetType.STREET, TableNumbers, chips)
 
-  def make_line_bet(self, numbers, chips):
-    if not self.table.is_line(numbers):
-      raise InvalidBetException('Numbers {numbers} are not a line.')
-    return Bet(BetType.LINE, numbers, chips)
+  def make_line_bet(self, TableNumbers, chips):
+    if not self.table.is_line(TableNumbers):
+      raise InvalidBetException('TableNumbers {TableNumbers} are not a line.')
+    return Bet(BetType.LINE, TableNumbers, chips)
 
-  def make_corner_bet(self, numbers, chips):
-    if not self.table.is_corner(numbers, chips):
-      raise InvalidBetException('Numbers {numbers} are not a corner.')
-    return Bet(BetType.CORNER, numbers, chips)
+  def make_corner_bet(self, TableNumbers, chips):
+    if not self.table.is_corner(TableNumbers, chips):
+      raise InvalidBetException('TableNumbers {TableNumbers} are not a corner.')
+    return Bet(BetType.CORNER, TableNumbers, chips)
 
   def make_column_bet(self, num_column, chips):
     if not self.table.is_column(num_column):
       raise InvalidBetException('{num_column} is not a valid column.')
-    numbers = self.table.get_column_numbers(num_column)
-    return Bet(BetType.COLUMN, numbers, chips)
+    TableNumbers = self.table.get_column_TableNumbers(num_column)
+    return Bet(BetType.COLUMN, TableNumbers, chips)
 
   def make_even_bet(self, chips):
-    numbers = self.table.get_even_numbers()
-    return Bet(BetType.EVEN_ODD, numbers, chips)
+    TableNumbers = self.table.get_even_TableNumbers()
+    return Bet(BetType.EVEN_ODD, TableNumbers, chips)
 
   def make_odd_bet(self, chips):
-    numbers = self.table.get_odd_numbers()
-    return Bet(BetType.EVEN_ODD, numbers, chips)
+    TableNumbers = self.table.get_odd_TableNumbers()
+    return Bet(BetType.EVEN_ODD, TableNumbers, chips)
 
   def make_red_bet(self, chips):
-    numbers = self.table.get_red_numbers()
-    return Bet(BetType.RED_BLACK, numbers, chips)
+    TableNumbers = self.table.get_red_TableNumbers()
+    return Bet(BetType.RED_BLACK, TableNumbers, chips)
 
   def make_black_bet(self, chips):
-    numbers = self.table.get_black_numbers()
-    return Bet(BetType.RED_BLACK, numbers, chips)
+    TableNumbers = self.table.get_black_TableNumbers()
+    return Bet(BetType.RED_BLACK, TableNumbers, chips)
 
   def make_low_bet(self, chips):
-    numbers = self.table.get_low_numbers()
-    return Bet(BetType.LOW_HIGH, numbers, chips)
+    TableNumbers = self.table.get_low_TableNumbers()
+    return Bet(BetType.LOW_HIGH, TableNumbers, chips)
 
   def make_high_bet(self, chips):
-    numbers = self.table.get_high_numbers()
-    return Bet(BetType.LOW_HIGH, numbers, chips)
+    TableNumbers = self.table.get_high_TableNumbers()
+    return Bet(BetType.LOW_HIGH, TableNumbers, chips)
