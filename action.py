@@ -85,7 +85,7 @@ class RoulettePayout(GameAction):
     # Assign chips to players based on bets.
     for player, bets in state.bets.items():
       for bet in bets:
-        if spin_result in bet.TableNumbers:
+        if spin_result in bet.numbers:
           odds = bet.odds
           payout = bet.chips * odds.value
           if not odds.for_to:
