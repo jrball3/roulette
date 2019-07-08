@@ -1,6 +1,7 @@
 from copy import deepcopy
 from enum import IntEnum
 
+from roulette.common import RouletteActionType
 from roulette.game import GameAction
 from roulette.state import (
   RouletteInitialState,
@@ -8,15 +9,6 @@ from roulette.state import (
   RouletteSpinState,
   RouletteEndState,
 )
-
-
-class RouletteActionType(IntEnum):
-  BUY_IN = 0
-  START = 1
-  BET = 2
-  SPIN = 3
-  PAYOUT = 4
-  END = 5
 
 
 class RouletteBuyIn(GameAction):
@@ -80,14 +72,14 @@ class RoulettePayout(GameAction):
     super().__init__(RouletteActionType.PAYOUT, dealer)
 
   def accept(self, state):
-    spin_result = state.spin_result
+    spin_result = state.spin
     new_chips = deepcopy(state.chips)
 
     # Assign chips to players based on bets.
     for player, bets in state.bets.items():
       for bet in bets:
         if spin_result in bet.numbers:
-          odds = bet.odds
+          odds = state.odds[bet.bet_type]
           payout = bet.chips * odds.value
           if not odds.for_to:
             payout += bet.chips

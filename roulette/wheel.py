@@ -4,24 +4,14 @@ from enum import IntEnum
 from roulette.common import NumberColor
 
 
-class WheelBin():
-  def __init__(self, number=None, color=None):
-    self.number = number
-    self.color = color
-
-
 class RouletteWheel():
   def __init__(self):
-    self.bins = {
-      '0': WheelBin('0', NumberColor.GREEN),
-      '00': WheelBin('00', NumberColor.GREEN),
-    }
+    self.bins = {'0', '00'}
     for num in range(1, 37):
-      color = NumberColor.RED if num % 2 == 0 else NumberColor.BLACK
-      self.bins[str(num)] = WheelBin(number = str(num), color = color)
+      self.bins.add(str(num))
 
   def spin(self):
-    return random.choice(list(self.bins.values()))
+    return random.choice(list(self.bins))
 
   def has_number(self, number):
     return number in self.bins

@@ -17,5 +17,4 @@ class WheelTests(unittest.TestCase):
     wheel = RouletteWheel()
     result = wheel.spin()
     self.assertTrue(result is not None)
-    self.assertTrue(isinstance(result.number, str))
-    self.assertTrue(result.color is not None)
+    self.assertTrue(isinstance(result, str))

@@ -1,7 +1,7 @@
 from enum import IntEnum
 
 from roulette.game import GameState, InvalidActionException
-from roulette.action import RouletteActionType
+from roulette.common import RouletteActionType
 from roulette.table import RouletteTable
 from roulette.wheel import RouletteWheel
 from roulette.bet import Odds, BetType
