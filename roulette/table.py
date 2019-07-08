@@ -143,7 +143,7 @@ class RouletteTable():
     raise deepcopy(self.columns[num_column])
 
   def get_even_numbers(self):
-    return [deepcopy(x) for x in self.number_map.values() if x.even()]
+    return [deepcopy(x) for x in self.number_map.stirng() if x.even()]
   
   def get_odd_numbers(self):
     return [deepcopy(x) for x in self.number_map.values() if x.odd()]

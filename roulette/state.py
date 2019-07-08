@@ -28,7 +28,7 @@ class RouletteBaseState(GameState):
     self.players = players or []
     self.chips = chips or {}
 
-  def valid_actions(self, action):
+  def valid_actions(self):
     return [
       *super().valid_actions(),
       RouletteActionType.END
@@ -46,21 +46,24 @@ class RouletteInitialState(RouletteBaseState):
       *super().valid_actions(),
       RouletteActionType.BUY_IN,
       RouletteActionType.START,
+      RouletteActionType.BET,
     ]
 
 
 class RouletteBetState(RouletteBaseState):
   def __init__(self, table=None, wheel=None, players=None,
-               chips=None, odds=None, bets=None):
+               chips=None, odds=None, bets=None, done_betting=None):
     super().__init__(table=table, wheel=wheel, players=players,
                      chips=chips, odds=odds)
     self.bets = bets or {}
+    self.done_betting = done_betting or set()
 
-  def valid_actions(self, action):
+  def valid_actions(self):
     return [
       *super().valid_actions(),
       RouletteActionType.BET,
-      RouletteActionType.SPIN
+      RouletteActionType.DONE_BETTING,
+      RouletteActionType.SPIN,
     ]
 
 
@@ -74,7 +77,7 @@ class RouletteSpinState(RouletteBaseState):
     self.bets = bets or {}
     self.spin = spin
 
-  def valid_actions(self, action):
+  def valid_actions(self):
     return [
       *super().valid_actions(),
       RouletteActionType.PAYOUT,

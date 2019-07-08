@@ -14,8 +14,8 @@ from roulette.state import (
 )
 from roulette.action import (
   RouletteBuyIn,
-  RouletteStart,
   RouletteBet,
+  RouletteDoneBetting,
   RouletteSpin,
   RoulettePayout,
   RouletteEnd,
@@ -23,33 +23,23 @@ from roulette.action import (
 from roulette.bet import BetBuilder
 from roulette.wheel import RouletteWheel
 from roulette.table import RouletteTable
+from roulette.game import GamePlayer
 
 
 class ActionTests(unittest.TestCase):
   def test_buy_in(self):
     before = RouletteInitialState()
-    player = 1
+    player = GamePlayer('1')
     chips = 500
     action = RouletteBuyIn(player, chips)
     after = action.accept(before)
     self.assertTrue(player in after.players)
-    self.assertEqual(after.chips[player], chips)
-
-  def test_start(self):
-    before = RouletteInitialState()
-    player = 1
-    action = RouletteStart(player)
-    after = action.accept(before)
-    self.assertTrue(isinstance(after, RouletteBetState))
-    self.assertEqual(before.table, after.table)
-    self.assertEqual(before.wheel, after.wheel)
-    self.assertEqual(before.players, after.players)
-    self.assertEqual(before.chips, after.chips)
+    self.assertEqual(after.chips[player.name], chips)
 
   def test_bet(self):
-    player = 1
+    player = GamePlayer('1')
     balance = 500
-    before = RouletteBetState(chips={player: balance})
+    before = RouletteBetState(chips={player.name: balance})
     builder = BetBuilder(before.table, before.wheel)
     bet = builder.make_straight_bet('10', 50)
     action = RouletteBet(player, bet)
@@ -58,13 +48,27 @@ class ActionTests(unittest.TestCase):
     self.assertEqual(before.table, after.table)
     self.assertEqual(before.wheel, after.wheel)
     self.assertEqual(before.players, after.players)
-    self.assertEqual(after.chips[player], 450)
-    self.assertTrue(bet in after.bets[player])
+    self.assertEqual(before.done_betting, after.done_betting)
+    self.assertEqual(after.chips[player.name], 450)
+    self.assertTrue(bet in after.bets[player.name])
+
+  def test_done_betting(self):
+    player = GamePlayer('1')
+    balance = 500
+    before = RouletteBetState(chips={player.name: balance})
+    action = RouletteDoneBetting(player)
+    after = action.accept(before)
+    self.assertTrue(isinstance(after, RouletteBetState))
+    self.assertEqual(before.table, after.table)
+    self.assertEqual(before.wheel, after.wheel)
+    self.assertEqual(before.players, after.players)
+    self.assertTrue(player.name in after.done_betting)
+
 
   def test_spin(self):
-    player = 1
+    player = GamePlayer('1')
     balance = 500
-    before = RouletteBetState(chips={player: balance})
+    before = RouletteBetState(chips={player.name: balance})
     action = RouletteSpin(player)
     after = action.accept(before)
     self.assertTrue(isinstance(after, RouletteSpinState))
@@ -76,8 +80,8 @@ class ActionTests(unittest.TestCase):
     self.assertIsNotNone(after.spin)
 
   def test_payout(self):
-    player = 1
-    dealer = 2
+    player = GamePlayer('1')
+    dealer = GamePlayer('2')
     balance = 450
     table = RouletteTable()
     wheel = RouletteWheel()
@@ -85,8 +89,8 @@ class ActionTests(unittest.TestCase):
     bet = builder.make_straight_bet('10', 50)
     before = RouletteSpinState(
       table=table, wheel=wheel,
-      chips={player: balance},
-      bets={player: [bet]},
+      chips={player.name: balance},
+      bets={player.name: [bet]},
       spin='10')
     action = RoulettePayout(dealer)
     after = action.accept(before)
@@ -94,11 +98,11 @@ class ActionTests(unittest.TestCase):
     self.assertEqual(before.table, after.table)
     self.assertEqual(before.wheel, after.wheel)
     self.assertEqual(before.players, after.players)
-    self.assertEqual(after.chips[player], 50 + 50 * 35 + balance)
+    self.assertEqual(after.chips[player.name], 50 + 50 * 35 + balance)
 
   def test_end(self):
     before = RouletteInitialState()
-    player = 1
+    player = GamePlayer('1')
     action = RouletteEnd(player)
     after = action.accept(before)
     self.assertTrue(isinstance(after, RouletteEndState))

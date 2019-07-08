@@ -10,6 +10,7 @@ class RouletteActionType(IntEnum):
   BUY_IN = 0
   START = 1
   BET = 2
-  SPIN = 3
-  PAYOUT = 4
-  END = 5
+  DONE_BETTING = 3
+  SPIN = 4
+  PAYOUT = 5
+  END = 6

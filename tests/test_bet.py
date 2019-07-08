@@ -56,14 +56,14 @@ class BetBuilderTests(unittest.TestCase):
     bet = self.builder.make_top_bet(50)
     self.assertEqual(bet.bet_type, BetType.TOP)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_top_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_top_numbers()))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_street_bet(self):
     bet = self.builder.make_street_bet(2, 50)
     self.assertEqual(bet.bet_type, BetType.STREET)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), 
+    exp_nums = list(map(lambda n: n.string(), 
                         self.table.get_street_numbers(2)))
     self.assertEqual(bet.numbers, exp_nums)
 
@@ -72,7 +72,7 @@ class BetBuilderTests(unittest.TestCase):
     self.assertEqual(bet.bet_type, BetType.LINE)
     self.assertEqual(bet.chips, 50)
     nums = self.table.get_line_numbers(2)
-    exp_nums = list(map(lambda n: n.value(), [*nums[0], *nums[1]]))
+    exp_nums = list(map(lambda n: n.string(), [*nums[0], *nums[1]]))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_corner_bet(self):
@@ -80,54 +80,54 @@ class BetBuilderTests(unittest.TestCase):
     self.assertEqual(bet.bet_type, BetType.CORNER)
     self.assertEqual(bet.chips, 50)
     nums = self.table.get_corner_numbers(2)
-    exp_nums = list(map(lambda n: n.value(), [*nums[0], *nums[1]]))
+    exp_nums = list(map(lambda n: n.string(), [*nums[0], *nums[1]]))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_column_bet(self):
     bet = self.builder.make_column_bet(2, 50)
     self.assertEqual(bet.bet_type, BetType.COLUMN)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_column_numbers(2)))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_column_numbers(2)))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_even_bet(self):
     bet = self.builder.make_even_bet(50)
     self.assertEqual(bet.bet_type, BetType.EVEN_ODD)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_even_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_even_numbers()))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_odd_bet(self):
     bet = self.builder.make_odd_bet(50)
     self.assertEqual(bet.bet_type, BetType.EVEN_ODD)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_odd_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_odd_numbers()))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_red_bet(self):
     bet = self.builder.make_red_bet(50)
     self.assertEqual(bet.bet_type, BetType.RED_BLACK)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_red_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_red_numbers()))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_black_bet(self):
     bet = self.builder.make_black_bet(50)
     self.assertEqual(bet.bet_type, BetType.RED_BLACK)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_black_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_black_numbers()))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_low_bet(self):
     bet = self.builder.make_low_bet(50)
     self.assertEqual(bet.bet_type, BetType.LOW_HIGH)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_low_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_low_numbers()))
     self.assertEqual(bet.numbers, exp_nums)
 
   def test_should_make_high_bet(self):
     bet = self.builder.make_high_bet(50)
     self.assertEqual(bet.bet_type, BetType.LOW_HIGH)
     self.assertEqual(bet.chips, 50)
-    exp_nums = list(map(lambda n: n.value(), self.table.get_high_numbers()))
+    exp_nums = list(map(lambda n: n.string(), self.table.get_high_numbers()))
     self.assertEqual(bet.numbers, exp_nums)

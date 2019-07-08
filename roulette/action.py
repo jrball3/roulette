@@ -20,18 +20,7 @@ class RouletteBuyIn(GameAction):
     return RouletteInitialState(
       table=state.table, wheel=state.wheel,
       players=[*state.players, self.player],
-      chips={**state.chips, self.player: self.chips}
-    )
-
-
-class RouletteStart(GameAction):
-  def __init__(self, player):
-    super().__init__(RouletteActionType.START, player)
-
-  def accept(self, state):
-    return RouletteBetState(
-      table=state.table, wheel=state.wheel,
-      players=state.players, chips=state.chips
+      chips={**state.chips, self.player.name: self.chips}
     )
 
 
@@ -42,15 +31,33 @@ class RouletteBet(GameAction):
 
   def accept(self, state):
     new_chips = deepcopy(state.chips)
-    new_bets = deepcopy(state.bets)
-    bet_list = new_bets.setdefault(self.player, [])
+    if hasattr(state, 'bets'):
+      new_bets = deepcopy(state.bets)
+    else:
+      new_bets = {}
+    bet_list = new_bets.setdefault(self.player.name, [])
     bet_list.append(self.bet)
-    new_chips[self.player] -= self.bet.chips
+    new_chips[self.player.name] -= self.bet.chips
 
     return RouletteBetState(
       table=state.table, wheel=state.wheel,
       players=state.players, chips=new_chips,
       bets=new_bets
+    )
+
+
+class RouletteDoneBetting(GameAction):
+  def __init__(self, player):
+    super().__init__(RouletteActionType.DONE_BETTING, player)
+
+  def accept(self, state):
+    new_done = deepcopy(state.done_betting)
+    new_done.add(self.player.name)
+
+    return RouletteBetState(
+      table=state.table, wheel=state.wheel,
+      players=state.players, chips=state.chips,
+      bets=state.bets, done_betting=new_done,
     )
 
 

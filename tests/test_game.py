@@ -16,8 +16,8 @@ class MockGameListener(GameStateListener):
   def __init__(self):
     self.last_event = None
 
-  def on_state_changed(self, game):
-    self.last_event = game
+  def on_state_changed(self, game, new_state, prev_state, action):
+    self.last_event = action
 
 
 class MockGameAction(GameAction):

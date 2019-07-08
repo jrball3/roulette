@@ -7,7 +7,7 @@ class GameState():
 
   def check_action(self, action):
     if action.action_type not in self.valid_actions():
-      raise InvalidActionException('{action} is invalid for {self}')
+      raise InvalidActionException(f'{action} is invalid for {self}')
 
 
 class GameAction():
@@ -20,8 +20,13 @@ class GameAction():
 
 
 class GameStateListener():
-  def on_state_changed(self, game):
+  def on_state_changed(self, game, new_state, prev_state, action):
     pass
+
+
+class GamePlayer(GameStateListener):
+  def __init__(self, name):
+    self.name = name
 
 
 class Game():
@@ -41,4 +46,4 @@ class Game():
     self.state = new_state
     if old_state is not self.state:
       for ls in self.listeners:
-        ls.on_state_changed(self)
+        ls.on_state_changed(self, new_state, old_state, action)

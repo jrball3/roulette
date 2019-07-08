@@ -19,9 +19,11 @@ class RouletteFactory():
 
   def with_dealer(self, dealer):
     self.dealer = dealer
+    return self
 
   def with_players(self, players):
     self.players = players
+    return self
 
   def build(self):
     game = Game(name=self.name, game_id=self.game_id, 
